@@ -28,7 +28,7 @@ impl Manager {
     /// call `.start(...)` on a backend which will call this function.
     pub fn new() -> (Self, Renderer) {
         let (mixer, mixer_controller) =
-            Controllable::new(SoundMixer::new(DEFAULT_CHANNEL_COUNT, DEFAULT_SAMPLE_RATE));
+            Controllable::new(SoundMixer::new(DEFAULT_CHANNEL_COUNT, DEFAULT_SAMPLE_RATE as u64));
         let renderer = Renderer::new(mixer);
         let manager = Manager { mixer_controller };
         (manager, renderer)

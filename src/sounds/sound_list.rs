@@ -81,11 +81,11 @@ impl Sound for SoundList {
             .unwrap_or(DEFAULT_CHANNEL_COUNT)
     }
 
-    fn sample_rate(&self) -> u32 {
+    fn sample_rate(&self) -> u64 {
         self.sounds
             .first()
             .map(|s| s.sample_rate())
-            .unwrap_or(DEFAULT_SAMPLE_RATE)
+            .unwrap_or(DEFAULT_SAMPLE_RATE as u64)
     }
 
     fn on_start_of_batch(&mut self) {

@@ -52,7 +52,7 @@ where
         self.inner.channel_count()
     }
 
-    fn sample_rate(&self) -> u32 {
+    fn sample_rate(&self) -> u64 {
         self.inner.sample_rate()
     }
 

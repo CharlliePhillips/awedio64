@@ -38,7 +38,7 @@ fn test_max_saturation() {
         first.next_sample().unwrap(),
         crate::NextSample::Sample(1000)
     );
-    assert_eq!(first.sample_rate(), u32::MAX)
+    assert_eq!(first.sample_rate(), u64::MAX)
 }
 
 #[test]
@@ -59,7 +59,7 @@ fn test_min_saturation() {
 #[test]
 fn metadata_changed_notification() {
     let mut first = ConstantValueSound::new(1000).with_adjustable_speed();
-    assert_eq!(first.sample_rate(), DEFAULT_SAMPLE_RATE);
+    assert_eq!(first.sample_rate(), DEFAULT_SAMPLE_RATE as u64);
     assert_eq!(
         first.next_sample().unwrap(),
         crate::NextSample::Sample(1000)

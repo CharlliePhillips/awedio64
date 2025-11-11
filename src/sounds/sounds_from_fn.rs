@@ -16,7 +16,7 @@ pub struct SoundsFromFn {
     generator: SoundGenerator,
     current: Option<Box<dyn Sound>>,
     current_channel_count: u16,
-    current_sample_rate: u32,
+    current_sample_rate: u64,
 }
 
 impl SoundsFromFn {
@@ -61,7 +61,7 @@ impl Sound for SoundsFromFn {
             .unwrap_or(1)
     }
 
-    fn sample_rate(&self) -> u32 {
+    fn sample_rate(&self) -> u64 {
         self.current
             .as_ref()
             .map(|s| s.sample_rate())

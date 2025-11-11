@@ -22,7 +22,7 @@ impl BackendSource for Renderer {
     fn set_output_channel_count_and_sample_rate(
         &mut self,
         output_channel_count: u16,
-        output_sample_rate: u32,
+        output_sample_rate: u64,
     ) {
         self.mixer
             .inner_mut()
@@ -35,7 +35,7 @@ impl Sound for Renderer {
         self.mixer.channel_count()
     }
 
-    fn sample_rate(&self) -> u32 {
+    fn sample_rate(&self) -> u64 {
         self.mixer.sample_rate()
     }
 

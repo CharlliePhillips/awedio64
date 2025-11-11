@@ -12,7 +12,7 @@ pub const DEFAULT_CHANNEL_COUNT: u16 = 2;
 pub struct ConstantValueSound {
     pub value: i16,
     pub channel_count: u16,
-    pub sample_rate: u32,
+    pub sample_rate: u64,
     pub metadata_changed: bool,
 }
 
@@ -21,7 +21,7 @@ impl ConstantValueSound {
         ConstantValueSound {
             value,
             channel_count: DEFAULT_CHANNEL_COUNT,
-            sample_rate: DEFAULT_SAMPLE_RATE,
+            sample_rate: DEFAULT_SAMPLE_RATE as u64,
             metadata_changed: false,
         }
     }
@@ -32,7 +32,7 @@ impl Sound for ConstantValueSound {
         self.channel_count
     }
 
-    fn sample_rate(&self) -> u32 {
+    fn sample_rate(&self) -> u64 {
         self.sample_rate
     }
 
@@ -53,7 +53,7 @@ impl ConstantValueSound {
         self.metadata_changed = true;
     }
 
-    pub fn set_sample_rate(&mut self, new_rate: u32) {
+    pub fn set_sample_rate(&mut self, new_rate: u64) {
         self.sample_rate = new_rate;
         self.metadata_changed = true;
     }
@@ -65,11 +65,11 @@ pub struct Sawtooth {
     pub value: i16,
     pub channel_count: u16,
     pub channel_idx: u16,
-    pub sample_rate: u32,
+    pub sample_rate: u64,
 }
 
 impl Sawtooth {
-    pub fn new(channel_count: u16, sample_rate: u32) -> Sawtooth {
+    pub fn new(channel_count: u16, sample_rate: u64) -> Sawtooth {
         Sawtooth {
             value: 0,
             channel_count,
@@ -84,7 +84,7 @@ impl Sound for Sawtooth {
         self.channel_count
     }
 
-    fn sample_rate(&self) -> u32 {
+    fn sample_rate(&self) -> u64 {
         self.sample_rate
     }
 

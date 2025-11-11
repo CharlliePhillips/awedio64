@@ -16,7 +16,7 @@ pub struct SoundMixer {
     sounds: Vec<MixedSound>,
     paused_sounds: Vec<MixedSound>,
     output_channel_count: u16,
-    output_sample_rate: u32,
+    output_sample_rate: u64,
     metadata_changed: bool,
     next_output_channel_idx: u16,
 }
@@ -24,7 +24,7 @@ pub struct SoundMixer {
 impl SoundMixer {
     /// Create a new empty sound mixer with an output channel count and sample
     /// rate that all added sounds will be converted to.
-    pub fn new(output_channel_count: u16, output_sample_rate: u32) -> Self {
+    pub fn new(output_channel_count: u16, output_sample_rate: u64) -> Self {
         SoundMixer {
             sounds: Vec::new(),
             paused_sounds: Vec::new(),
@@ -41,7 +41,7 @@ impl SoundMixer {
     pub fn set_output_channel_count_and_sample_rate(
         &mut self,
         output_channel_count: u16,
-        output_sample_rate: u32,
+        output_sample_rate: u64,
     ) {
         self.metadata_changed = true;
 
@@ -68,7 +68,7 @@ impl Sound for SoundMixer {
         self.output_channel_count
     }
 
-    fn sample_rate(&self) -> u32 {
+    fn sample_rate(&self) -> u64 {
         self.output_sample_rate
     }
 

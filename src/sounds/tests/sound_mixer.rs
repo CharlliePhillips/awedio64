@@ -5,7 +5,7 @@ use crate::tests::{ConstantValueSound, DEFAULT_CHANNEL_COUNT, DEFAULT_SAMPLE_RAT
 fn additional_silent_sounds_do_not_affect_first() {
     let first = ConstantValueSound::new(5);
     let second = ConstantValueSound::new(0);
-    let mut mixer = SoundMixer::new(DEFAULT_CHANNEL_COUNT, DEFAULT_SAMPLE_RATE);
+    let mut mixer = SoundMixer::new(DEFAULT_CHANNEL_COUNT, DEFAULT_SAMPLE_RATE as u64);
     mixer.add(Box::new(first));
     mixer.add(Box::new(second));
     assert_eq!(mixer.next_sample().unwrap(), NextSample::Sample(5));
@@ -22,7 +22,7 @@ fn additional_silent_sounds_do_not_affect_first() {
 fn two_sounds_add_together() {
     let first = ConstantValueSound::new(5);
     let second = ConstantValueSound::new(7);
-    let mut mixer = SoundMixer::new(DEFAULT_CHANNEL_COUNT, DEFAULT_SAMPLE_RATE);
+    let mut mixer = SoundMixer::new(DEFAULT_CHANNEL_COUNT, DEFAULT_SAMPLE_RATE as u64);
     mixer.add(Box::new(first));
     mixer.add(Box::new(second));
     assert_eq!(mixer.next_sample().unwrap(), NextSample::Sample(12));

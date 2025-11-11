@@ -49,11 +49,11 @@ where
 {
     /// Create a new SampleRateConverter with an output sample rate of
     /// `to_rate`.
-    pub fn new(inner: S, to_rate: u32) -> SampleRateConverter<S> {
+    pub fn new(inner: S, to_rate: u64) -> SampleRateConverter<S> {
         let channel_count = inner.channel_count();
         let mut new = SampleRateConverter {
             inner,
-            to_rate,
+            to_rate: to_rate as u64,
             to_rate_scaled: 0,
             from_rate_scaled: 0,
             current_frame_pos_in_chunk: 0,
@@ -82,7 +82,7 @@ where
         // finding greatest common divisor
         let gcd = {
             #[inline]
-            fn gcd(a: u32, b: u32) -> u32 {
+            fn gcd(a: u64, b: u64) -> u64 {
                 if b == 0 {
                     a
                 } else {
@@ -98,7 +98,7 @@ where
         self.next_frame = Vec::new();
 
         self.to_rate_scaled = self.to_rate / gcd;
-        self.from_rate_scaled = from_rate / gcd;
+        self.from_rate_scaled = from_rate as u64 / gcd;
         self.current_frame_pos_in_chunk = 0;
         self.next_output_frame_pos_in_chunk = 0;
         self.output_frame = Vec::with_capacity(channel_count as usize - 1);
@@ -106,7 +106,7 @@ where
 
     fn fill_frames(&mut self) -> Result<bool, crate::Error> {
         let from_rate = self.inner.sample_rate();
-        let (first_samples, next_samples) = if from_rate == self.to_rate {
+        let (first_samples, next_samples) = if from_rate as u64 == self.to_rate {
             (Vec::new(), Vec::new())
         } else {
             let mut collect_frame = || match self.inner.next_frame() {
@@ -179,7 +179,7 @@ where
         self.inner.channel_count()
     }
 
-    fn sample_rate(&self) -> u32 {
+    fn sample_rate(&self) -> u64 {
         self.to_rate
     }
 
@@ -237,8 +237,8 @@ where
             }
             self.current_frame_pos_in_chunk = 0;
         } else {
-            println!("next out frame {}", self.next_output_frame_pos_in_chunk);
-            println!("next out frame {}", self.to_rate_scaled);
+            // println!("next out frame {}", self.next_output_frame_pos_in_chunk);
+            // println!("next out frame {}", self.to_rate_scaled);
 
             // Finding the position of the first sample of the linear interpolation.
             let req_left_sample = (self.from_rate_scaled * self.next_output_frame_pos_in_chunk
@@ -337,7 +337,7 @@ impl<S: Sound> Wrapper for SampleRateConverter<S> {
     }
 }
 
-fn linear_interpolation(first: i16, second: i16, numerator: u32, denominator: u32) -> i16 {
+fn linear_interpolation(first: i16, second: i16, numerator: u64, denominator: u64) -> i16 {
     (first as i64 + (second as i64 - first as i64) * numerator as i64 / denominator as i64) as i16
 }
 

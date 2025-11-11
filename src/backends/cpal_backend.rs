@@ -10,6 +10,7 @@ use cpal::{
     BackendSpecificError, BuildStreamError, DefaultStreamConfigError, FromSample, PlayStreamError,
     Sample, StreamError,
 };
+use symphonia::core::sample;
 use std::error::Error;
 
 pub use cpal::BufferSize as CpalBufferSize;
@@ -20,7 +21,7 @@ pub use cpal::BufferSize as CpalBufferSize;
 /// output device of the host changes.
 pub struct CpalBackend {
     channel_count: u16,
-    sample_rate: u32,
+    sample_rate: u64,
     sample_format: cpal::SampleFormat,
     buffer_size: CpalBufferSize,
     device: cpal::Device,
@@ -43,7 +44,7 @@ impl CpalBackend {
 
         Some(CpalBackend {
             channel_count,
-            sample_rate,
+            sample_rate: sample_rate as u64,
             buffer_size: CpalBufferSize::Default,
             device,
             stream: None,
@@ -66,7 +67,7 @@ impl CpalBackend {
 
         Some(CpalBackend {
             channel_count,
-            sample_rate,
+            sample_rate: sample_rate as u64,
             buffer_size,
             device,
             stream: None,
@@ -84,7 +85,7 @@ impl CpalBackend {
     ) -> CpalBackend {
         CpalBackend {
             channel_count,
-            sample_rate,
+            sample_rate: sample_rate as u64,
             buffer_size,
             device,
             stream: None,
@@ -111,7 +112,8 @@ impl CpalBackend {
 
         let config = cpal::StreamConfig {
             channels: self.channel_count,
-            sample_rate: cpal::SampleRate(self.sample_rate),
+            //TODO: this is sketchy...
+            sample_rate: cpal::SampleRate(self.sample_rate.try_into().unwrap()),
             buffer_size: self.buffer_size,
         };
 

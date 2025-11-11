@@ -3,7 +3,7 @@ use std::f32::consts::TAU;
 /// A constant pitch sound of infinite length.
 pub struct SineWave {
     freq: f32,
-    sample_rate: u32,
+    sample_rate: u64,
     sample_num: u32,
     reset_num: u32,
 }
@@ -15,7 +15,7 @@ impl SineWave {
     }
 
     /// A constant pitch sound with `sample_rate`.
-    pub fn with_sample_rate(freq: f32, sample_rate: u32) -> SineWave {
+    pub fn with_sample_rate(freq: f32, sample_rate: u64) -> SineWave {
         let reset_num = find_reset_num(freq, sample_rate);
 
         SineWave {
@@ -32,7 +32,7 @@ impl SineWave {
 ///
 /// We want to minimize the sample number though because large numbers
 /// cause distortions
-fn find_reset_num(freq: f32, sample_rate: u32) -> u32 {
+fn find_reset_num(freq: f32, sample_rate: u64) -> u32 {
     let mut best_error = f64::MAX;
     let mut best_reset_num = 0;
 
@@ -56,7 +56,7 @@ impl crate::Sound for SineWave {
         1
     }
 
-    fn sample_rate(&self) -> u32 {
+    fn sample_rate(&self) -> u64 {
         self.sample_rate
     }
 

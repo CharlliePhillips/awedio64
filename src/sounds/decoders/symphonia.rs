@@ -12,7 +12,7 @@ use symphonia::core::sample::Sample;
 
 /// Decode formats using the Symphonia crate decoders.
 pub struct SymphoniaDecoder {
-    sample_rate: u32,
+    sample_rate: u64,
 
     decoder: Box<dyn Decoder>,
     format: Box<dyn FormatReader>,
@@ -79,7 +79,7 @@ impl Sound for SymphoniaDecoder {
         self.channels.count().try_into().unwrap()
     }
 
-    fn sample_rate(&self) -> u32 {
+    fn sample_rate(&self) -> u64 {
         self.sample_rate
     }
 
@@ -147,8 +147,8 @@ impl SymphoniaDecoder {
                 self.channels = buf_ref.spec().channels;
                 metadata_changed = true;
             }
-            if buf_ref.spec().rate != self.sample_rate {
-                self.sample_rate = buf_ref.spec().rate;
+            if buf_ref.spec().rate as u64 != self.sample_rate {
+                self.sample_rate = buf_ref.spec().rate as u64;
                 metadata_changed = true;
             }
             return Ok(metadata_changed);

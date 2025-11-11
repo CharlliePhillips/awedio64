@@ -14,9 +14,9 @@ use std::time::Duration;
 pub fn convert_num_samples(
     old_num_samples: u64,
     old_channel_count: u16,
-    old_sample_rate: u32,
+    old_sample_rate: u64,
     new_channel_count: u16,
-    new_sample_rate: u32,
+    new_sample_rate: u64,
 ) -> u64 {
     old_num_samples * new_channel_count as u64 * new_sample_rate as u64
         / (old_channel_count as u64 * old_sample_rate as u64)
@@ -24,7 +24,7 @@ pub fn convert_num_samples(
 
 /// Return the number of samples that happen within `duration` amount of time
 /// (truncates).
-pub fn duration_to_num_samples(duration: Duration, channel_count: u16, sample_rate: u32) -> u64 {
+pub fn duration_to_num_samples(duration: Duration, channel_count: u16, sample_rate: u64) -> u64 {
     convert_num_samples(
         duration
             .as_micros()

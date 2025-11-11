@@ -10,7 +10,7 @@ use crate::{NextSample, Sound};
 pub struct MemorySound {
     samples: Arc<Vec<i16>>,
     channel_count: u16,
-    sample_rate: u32,
+    sample_rate: u64,
 
     next_sample: usize,
     should_loop: bool,
@@ -92,7 +92,7 @@ impl MemorySound {
     pub fn from_samples(
         samples: Arc<Vec<i16>>,
         channel_count: u16,
-        sample_rate: u32,
+        sample_rate: u64,
     ) -> MemorySound {
         MemorySound {
             samples,
@@ -115,7 +115,7 @@ impl Sound for MemorySound {
         self.channel_count
     }
 
-    fn sample_rate(&self) -> u32 {
+    fn sample_rate(&self) -> u64 {
         self.sample_rate
     }
 

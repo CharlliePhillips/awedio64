@@ -1,14 +1,14 @@
 /// A forever stream of samples of value 0 (creating no sound).
 pub struct Silence {
     channel_count: u16,
-    sample_rate: u32,
+    sample_rate: u64,
 }
 
 impl Silence {
     /// Create a new sound that will return 0 samples forever and
     /// return the specified channel count and sample rate from
     /// their respective methods.
-    pub fn new(channel_count: u16, sample_rate: u32) -> Silence {
+    pub fn new(channel_count: u16, sample_rate: u64) -> Silence {
         Silence {
             channel_count,
             sample_rate,
@@ -21,7 +21,7 @@ impl crate::Sound for Silence {
         self.channel_count
     }
 
-    fn sample_rate(&self) -> u32 {
+    fn sample_rate(&self) -> u64 {
         self.sample_rate
     }
 

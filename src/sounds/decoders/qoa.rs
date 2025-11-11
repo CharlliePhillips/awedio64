@@ -9,7 +9,7 @@ where
     R: Read + Send,
 {
     raw_decoder: RawDecoder<R>,
-    sample_rate: u32,
+    sample_rate: u64,
     channel_count: u16,
 }
 
@@ -32,7 +32,7 @@ where
 
         Ok(QoaDecoder {
             raw_decoder,
-            sample_rate,
+            sample_rate: sample_rate as u64,
             channel_count,
         })
     }
@@ -51,7 +51,7 @@ where
         self.channel_count
     }
 
-    fn sample_rate(&self) -> u32 {
+    fn sample_rate(&self) -> u64 {
         self.sample_rate
     }
 
@@ -66,10 +66,10 @@ where
                 QoaItem::Sample(s) => return Ok(NextSample::Sample(s)),
                 QoaItem::FrameHeader(f) => {
                     if f.num_channels as u16 != self.channel_count
-                        || f.sample_rate != self.sample_rate
+                        || f.sample_rate as u64 != self.sample_rate
                     {
                         self.channel_count = f.num_channels.into();
-                        self.sample_rate = f.sample_rate;
+                        self.sample_rate = f.sample_rate as u64;
                         return Ok(NextSample::MetadataChanged);
                     }
                     // No metadata change. Continue and read next sample

@@ -13,7 +13,7 @@ pub struct FinishAfter<S: Sound> {
     samples_remaining: u64,
     total_duration: Duration,
     current_channel_count: u16,
-    current_sample_rate: u32,
+    current_sample_rate: u64,
 }
 
 impl<S> FinishAfter<S>
@@ -58,7 +58,7 @@ where
         self.inner.channel_count()
     }
 
-    fn sample_rate(&self) -> u32 {
+    fn sample_rate(&self) -> u64 {
         self.inner.sample_rate()
     }
 
@@ -102,7 +102,7 @@ where
     }
 }
 
-pub fn num_samples(duration: Duration, num_channels: u16, num_samples: u32) -> u64 {
+pub fn num_samples(duration: Duration, num_channels: u16, num_samples: u64) -> u64 {
     const MICROS_PER_SEC: u64 = 1_000_000;
     let micros = duration.as_secs() * MICROS_PER_SEC + duration.subsec_micros() as u64;
     micros * num_channels as u64 * num_samples as u64 / MICROS_PER_SEC

@@ -26,7 +26,7 @@ pub trait Sound: Send {
 
     /// Returns the number of samples per second for each channel for this sound
     /// (e.g. 44,100).
-    fn sample_rate(&self) -> u32;
+    fn sample_rate(&self) -> u64;
 
     /// Retrieve the next sample or notification if something has changed.
     /// The first sample is for the first channel and the second is the for
@@ -303,7 +303,7 @@ impl Sound for Box<dyn Sound> {
         self.deref().channel_count()
     }
 
-    fn sample_rate(&self) -> u32 {
+    fn sample_rate(&self) -> u64 {
         self.deref().sample_rate()
     }
 

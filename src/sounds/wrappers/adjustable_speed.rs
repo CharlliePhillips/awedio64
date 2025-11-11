@@ -63,10 +63,10 @@ where
         self.inner.channel_count()
     }
 
-    fn sample_rate(&self) -> u32 {
-        let new_rate = (self.inner.sample_rate() as f32 * self.speed_adjustment).round() as u32;
+    fn sample_rate(&self) -> u64 {
+        let new_rate = (self.inner.sample_rate() as f32 * self.speed_adjustment).round() as u64;
         // Do not let the new rate be 0 which would cause issues
-        u32::max(1, new_rate)
+        u64::max(1, new_rate)
     }
 
     fn next_sample(&mut self) -> Result<crate::NextSample, crate::Error> {
